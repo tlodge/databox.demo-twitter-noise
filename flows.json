@@ -1,1 +1,139 @@
-[{"id":"5f36cc4b.5a8754","label":"new package","type":"tab"},{"id":"f78d520a.f781","type":"twitter","z":"5f36cc4b.5a8754","name":"twitter","subtype":"twitterHashTagStream","x":134,"y":298,"wires":[["a6f9d80f.433298"]]},{"id":"a6f9d80f.433298","type":"extract","z":"5f36cc4b.5a8754","name":"extract tweet","filters":[{"source":"twitter","item":{"type":"string","description":"a name assigned to this twitter node","name":"name"},"path":["msg","name"]},{"source":"twitter","item":{"type":"string","description":"a tweet","name":"value"},"path":["msg","payload","value"]}],"x":240,"y":298,"wires":[["a5b0b1a7.3564d"]]},{"id":"a5b0b1a7.3564d","type":"dbfunction","z":"5f36cc4b.5a8754","name":"","func":"\nvar tweets = context.get(\"tweets\") || [];\nvar latest = context.get(\"latest\") || 0;\n\nvar nextTweet = function(){\n    if (latest < tweets.length){\n        context.set(\"latest\", latest+1);\n        return tweets[latest];\n    }\n    return \"no more tweets to show!\";\n}\n\nif (msg.payload.name === \"twitter\"){\n    tweets.push(msg.payload.value);\n    context.set(\"tweets\", tweets);\n}\n\nif (msg.name === \"sensingkit\"){\n    if (msg.payload.value > 18000){\n        return {\n            payload : nextTweet()\n        }\n    }\n}\n\nif (latest <= 0){\n    return {payload:\"make some noise\"};\n}","outputs":1,"noerr":0,"x":363,"y":387,"wires":[["c90ad512.412f28","df7946b8.fa5328"]]},{"id":"1baedc3a.872494","type":"app","z":"5f36cc4b.5a8754","name":"","appId":"webapp","layout":[["c90ad512.412f28"]],"x":643,"y":456,"wires":[]},{"id":"df7946b8.fa5328","type":"debugger","z":"5f36cc4b.5a8754","name":"","active":true,"console":"false","complete":"true","x":505,"y":269,"wires":[]},{"id":"c90ad512.412f28","type":"webify","z":"5f36cc4b.5a8754","name":"","field":"payload","fieldType":"msg","format":"handlebars","syntax":"mustache","template":"<style>\n   .tweet {\n        position: absolute; \n        top: 45%; \n        left: 0;\n        text-align: center; \n        width: 100%; \n        color: white;\n        background: none;\n        font-size: 5em;\n        color: #009688;\n    }\n</style>\n\n<div class=\"tweet\">\n    {{payload}}\n</div>","x":494,"y":456,"wires":[["1baedc3a.872494"]]},{"id":"e7455ed.aeab1a","type":"sensingkit","z":"5f36cc4b.5a8754","name":"","subtype":"audio-level","x":139,"y":462,"wires":[["a5b0b1a7.3564d"]]}]
+[
+    {
+        "id": "5f36cc4b.5a8754",
+        "label": "new package",
+        "type": "tab"
+    },
+    {
+        "id": "f78d520a.f781",
+        "type": "twitter",
+        "z": "5f36cc4b.5a8754",
+        "name": "twitter",
+        "subtype": "twitterHashTagStream",
+        "x": 134,
+        "y": 298,
+        "wires": [
+            [
+                "a6f9d80f.433298"
+            ]
+        ]
+    },
+    {
+        "id": "a6f9d80f.433298",
+        "type": "extract",
+        "z": "5f36cc4b.5a8754",
+        "name": "extract tweet",
+        "filters": [
+            {
+                "source": "twitter",
+                "item": {
+                    "type": "string",
+                    "description": "a name assigned to this twitter node",
+                    "name": "name"
+                },
+                "path": [
+                    "msg",
+                    "name"
+                ]
+            },
+            {
+                "source": "twitter",
+                "item": {
+                    "type": "string",
+                    "description": "a tweet",
+                    "name": "value"
+                },
+                "path": [
+                    "msg",
+                    "payload",
+                    "value"
+                ]
+            }
+        ],
+        "x": 240,
+        "y": 298,
+        "wires": [
+            [
+                "a5b0b1a7.3564d"
+            ]
+        ]
+    },
+    {
+        "id": "a5b0b1a7.3564d",
+        "type": "dbfunction",
+        "z": "5f36cc4b.5a8754",
+        "name": "",
+        "func": "\nvar tweets = context.get(\"tweets\") || [];\nvar latest = context.get(\"latest\") || 0;\n\nvar nextTweet = function(){\n    if (latest < tweets.length){\n        context.set(\"latest\", latest+1);\n        return tweets[latest];\n    }\n    return \"no more tweets to show!\";\n}\n\nif (msg.payload.name === \"twitter\"){\n    tweets.push(msg.payload.value);\n    context.set(\"tweets\", tweets);\n}\n\nif (msg.name === \"sensingkit\"){\n    if (msg.payload.value > 18000){\n        return {\n            payload : nextTweet()\n        }\n    }\n}\n\nif (latest <= 0){\n    return {payload:\"make some noise\"};\n}",
+        "outputs": 1,
+        "inputtypedef": "",
+        "outputtypedef": "",
+        "noerr": 0,
+        "x": 363,
+        "y": 387,
+        "wires": [
+            [
+                "c90ad512.412f28",
+                "df7946b8.fa5328"
+            ]
+        ]
+    },
+    {
+        "id": "1baedc3a.872494",
+        "type": "app",
+        "z": "5f36cc4b.5a8754",
+        "name": "",
+        "appId": "webapp",
+        "layout": [
+            [
+                "c90ad512.412f28"
+            ]
+        ],
+        "x": 643,
+        "y": 456,
+        "wires": []
+    },
+    {
+        "id": "df7946b8.fa5328",
+        "type": "debugger",
+        "z": "5f36cc4b.5a8754",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 505,
+        "y": 269,
+        "wires": []
+    },
+    {
+        "id": "c90ad512.412f28",
+        "type": "webify",
+        "z": "5f36cc4b.5a8754",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<style>\n   .tweet {\n        position: absolute; \n        top: 45%; \n        left: 0;\n        text-align: center; \n        width: 100%; \n        color: white;\n        background: none;\n        font-size: 5em;\n        color: #009688;\n    }\n</style>\n\n<div class=\"tweet\">\n    {{payload}}\n</div>",
+        "x": 494,
+        "y": 456,
+        "wires": [
+            [
+                "1baedc3a.872494"
+            ]
+        ]
+    },
+    {
+        "id": "e7455ed.aeab1a",
+        "type": "sensingkit",
+        "z": "5f36cc4b.5a8754",
+        "name": "",
+        "subtype": "audio-level",
+        "x": 139,
+        "y": 462,
+        "wires": [
+            [
+                "a5b0b1a7.3564d"
+            ]
+        ]
+    }
+]
